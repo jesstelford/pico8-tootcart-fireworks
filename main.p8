@@ -3,19 +3,7 @@ version 39
 __lua__
 --fireworks tootcart
 --by jess telford
-::_::cls()srand()r=rnd
-for i=1,20 do
-m=8+8*r()q=(t()/m)%1
-x=64+q*256*(r()-.5)y=128-sin(q)*-64*(r()+.8)s=q>.2 and q<.7 and 1 or 0
-circ(x,y,-s,7)j=2*(q-.2)k=m*(1-(1-j)^9)for u=0,1,.1 do
-circfill(x+sin(u)*k,y+cos(u)*k,(s*2)-1,8+(i/4)%8)
-end
-end
-flip()goto _
--- #tootcart #pico8 #lua
--->8
 -- annotated version:
---[[
 ::_::
 cls()
 srand()
@@ -23,7 +11,8 @@ r=rnd
 for i = 1, 20 do
   -- a number from 8-16, used to slow down the fireworks & size the explosion
   m = 8 + 8 * r()
-  -- frequency
+  -- later used in sin(), and determines how far it moves horizontally before
+  -- starting its decent along the sin curve
   q = (t() / m) % 1
   -- x position, based on frequency, then scaled out
   x = 64 + q * 256 * (r() - .5)
@@ -39,7 +28,7 @@ for i = 1, 20 do
   -- the explosion lasts until it drops off the bottom of the screen, which is
   -- only .5 sin() iteration, so we normalise that to a range of 0 - 1
   -- note: `2 *` is the same as `/ 0.5`
-  j = 2 * (q - .25)
+  j = 2 * (q - .2)
   -- based on easeOutQuart, we rapidly ease the value toward its target, then
   -- scale it by the desired radius
   k = (1 - (1 - j) ^ 9) * m
@@ -56,7 +45,6 @@ for i = 1, 20 do
 end
 flip()
 goto _
---]]
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
