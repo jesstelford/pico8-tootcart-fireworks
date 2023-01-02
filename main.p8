@@ -4,10 +4,10 @@ __lua__
 --fireworks tootcart
 --by jess telford
 -- annotated version:
+r=rnd
 ::_::
 cls()
 srand()
-r=rnd
 for i = 1, 20 do
   -- a number from 8-16, used to slow down the fireworks & size the explosion
   m = 8 + 8 * r()
@@ -17,7 +17,7 @@ for i = 1, 20 do
   -- x position, based on frequency, then scaled out
   x = 64 + q * 256 * (r() - .5)
   -- amplitude ensures it reaches top 2/3rds of screen
-  y = 128 - sin(q) * -64 * (r() + .8)
+  y = 128 + sin(q) * 64 * (r() + .8)
   -- we have two stages:
   -- 0: the firework is launching, for the upward curve of sin() (ie; 0 - 0.2)
   -- 1: the explosion, only on the downward curve of sin() (ie; 0.2 - 0.7)
@@ -49,7 +49,7 @@ for i = 1, 20 do
       -- a longer version might be: q<.4 and 1 or 0
       s*flr(sin(q-.9)),
       -- pick from the bright colors to start, then later change to dark blue
-      q>.45 and 1 or 8+(i/4)%8
+      q>.45 and 1 or 8+i%8
     )
   end
 end
