@@ -4,6 +4,7 @@ __lua__
 --fireworks tootcart
 --by jess telford
 -- annotated version:
+l=circfill
 r=rnd
 ::_::
 cls()
@@ -27,7 +28,7 @@ for i = 1, 20 do
   s=sgn(sin(q+.8))
   -- render the launching firework
   -- negative numbers will not render anything, 0 will render a dot
-  circ(x, y, s - 1, 7)
+  l(x, y, s - 1, 7)
   -- the explosion lasts until it drops off the bottom of the screen, which is
   -- only .5 sin() iteration, so we normalise that to a range of 0 - 1
   -- note: `2 *` is the same as `/ 0.5`
@@ -37,7 +38,7 @@ for i = 1, 20 do
   k = (1 - (1 - j) ^ 9) * m
   -- render dots around the circumference of the explosion circle
   for u = 0, 1, 0.1 do
-    circfill(
+    l(
       x + sin(u) * k,
       y + cos(u) * k,
       -- first radius -1 (don't render), then 1 (a cross), finally 0 (a dot).
@@ -45,9 +46,10 @@ for i = 1, 20 do
       -- explosion while the firework is still launching.
       -- ceil(sin()) gives us the 0 or 1.
       -- .9 is .4+.5 - shifting the sin curve by half to get the opposite sign,
-      -- which allows us to use flr() instead of ceil() to save 1 character
+      -- which allows us to use flr() instead of ceil() to save 1 character,
+      -- then \1 instead of flr() to save 3 more.
       -- a longer version might be: q<.4 and 1 or 0
-      s*flr(sin(q-.9)),
+      sin(q-.9)\1*s,
       -- pick from the bright colors to start, then later change to dark blue
       q>.45 and 1 or 8+i%8
     )
