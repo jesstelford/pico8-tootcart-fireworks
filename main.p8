@@ -21,10 +21,13 @@ for i = 1, 20 do
   -- we have two stages:
   -- 0: the firework is launching, for the upward curve of sin() (ie; 0 - 0.2)
   -- 1: the explosion, only on the downward curve of sin() (ie; 0.2 - 0.7)
-  s = q > .2 and q < .7 and 1 or 0
+  -- so we use sin() as a convenient way to determine which stage we're in
+  -- .8 is shifting the sin curve by half to get the opposite sign
+  -- an equivalent, longer version: s=q>.2 and q<.7 and 1 or -1
+  s=sgn(sin(q+.8))
   -- render the launching firework
-  -- -1 will not render anything
-  circ(x, y, -s, 7)
+  -- negative numbers will not render anything, 0 will render a dot
+  circ(x, y, s - 1, 7)
   -- the explosion lasts until it drops off the bottom of the screen, which is
   -- only .5 sin() iteration, so we normalise that to a range of 0 - 1
   -- note: `2 *` is the same as `/ 0.5`
@@ -37,10 +40,17 @@ for i = 1, 20 do
     circfill(
       x + sin(u) * k,
       y + cos(u) * k,
-      -- when s = 0, this results in -1, and so wont render anything
-      (s * 2) - 1,
-      -- pick from the bright colors
-      8 + (i / 4) % 8)
+      -- first radius -1 (don't render), then 1 (a cross), finally 0 (a dot).
+      -- multiply by s to force a negative number so we don't render the
+      -- explosion while the firework is still launching.
+      -- ceil(sin()) gives us the 0 or 1.
+      -- .9 is .4+.5 - shifting the sin curve by half to get the opposite sign,
+      -- which allows us to use flr() instead of ceil() to save 1 character
+      -- a longer version might be: q<.4 and 1 or 0
+      s*flr(sin(q-.9)),
+      -- pick from the bright colors to start, then later change to dark blue
+      q>.45 and 1 or 8+(i/4)%8
+    )
   end
 end
 flip()

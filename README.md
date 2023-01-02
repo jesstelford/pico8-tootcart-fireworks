@@ -8,9 +8,8 @@ characters (_279 including hashtags!_).
 ::_::cls()srand()r=rnd
 for i=1,20 do
 m=8+8*r()q=(t()/m)%1
-x=64+q*256*(r()-.5)y=128-sin(q)*-64*(r()+.8)s=q>.2 and q<.7 and 1 or 0
-circ(x,y,-s,7)j=2*(q-.2)k=m*(1-(1-j)^9)for u=0,1,.1 do
-circfill(x+sin(u)*k,y+cos(u)*k,(s*2)-1,8+(i/4)%8)
+x=64+q*256*(r()-.5)y=128+sin(q)*64*(r()+.8)s=sgn(sin(q+.8))circ(x,y,s-1,7)j=2*(q-.2)k=m*(1-(1-j)^9)for u=0,1,.1 do
+circfill(x+sin(u)*k,y+cos(u)*k,s*flr(sin(q-.9)),q>.45 and 1 or 8+(i/4)%8)
 end
 end
 flip()goto _
